@@ -1,0 +1,1 @@
+# Service AngularJS Consumer Seed
