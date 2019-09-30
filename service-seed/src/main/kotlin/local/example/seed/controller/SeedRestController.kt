@@ -57,8 +57,9 @@ class SeedRestController(
                 .map(seedResourceAssembler::toResource).toList()
         return Resources(
                 seeds,
-                ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(SeedRestController::class.java).readAll())
-                        .withSelfRel()
+                ControllerLinkBuilder.linkTo(
+                        ControllerLinkBuilder.methodOn(SeedRestController::class.java
+                        ).readAll()).withSelfRel()
         )
     }
 }
