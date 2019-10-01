@@ -1,4 +1,5 @@
 # Promise Seeds repository
+Application group with Spring Boot 2.1.8 and other open source frameworks.
 
 ## Key concepts:
 
