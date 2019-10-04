@@ -26,10 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.Resource
 import org.springframework.hateoas.Resources
 import org.springframework.hateoas.mvc.ControllerLinkBuilder
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import java.net.URI
 import java.net.URISyntaxException
 
 @RestController
@@ -38,6 +37,13 @@ class SeedRestController(
         @Autowired private val seedRepository: SeedRepository,
         @Autowired private val seedResourceAssembler: SeedResourceAssembler
 ) {
+
+    @PostMapping
+    @Throws(URISyntaxException::class)
+    internal fun create(@RequestBody seed: Seed): ResponseEntity<Resource<Seed>> {
+        val resource = seedResourceAssembler.toResource(seedRepository.save(seed))
+        return ResponseEntity.created(URI(resource.id.expand().href)).body(resource)
+    }
 
     @GetMapping(value = ["/{id}"])
     @Throws(URISyntaxException::class)
