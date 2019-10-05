@@ -68,4 +68,39 @@ class SeedRestController(
                         ).readAll()).withSelfRel()
         )
     }
+
+    @PutMapping("/{id}")
+    @Throws(URISyntaxException::class)
+    internal fun update(@RequestBody update: Seed, @PathVariable id: Long?): ResponseEntity<*> {
+        val updated = seedRepository.findById(id!!)
+                .map { temp ->
+                    temp.name = update.name
+                    seedRepository.save(temp)
+                }.orElseGet {
+                    seedRepository.save(update)
+                }
+        val resource = seedResourceAssembler.toResource(updated)
+        return ResponseEntity.created(URI(resource.id.expand().href)).body(resource)
+    }
+
+    @PatchMapping("/{id}")
+    @Throws(URISyntaxException::class)
+    internal fun partialUpdate(@RequestBody update: Seed, @PathVariable id: Long?): ResponseEntity<*> {
+        val updated = seedRepository.findById(id!!)
+                .map {
+                    temp -> if (!update.name.isNullOrBlank()) temp.name = update.name
+                    seedRepository.save(temp)
+                }.orElseGet {
+                    seedRepository.save(update)
+                }
+        val resource = seedResourceAssembler.toResource(updated)
+        return ResponseEntity.created(URI(resource.id.expand().href)).body(resource)
+    }
+
+    @DeleteMapping("/{id}")
+    @Throws(URISyntaxException::class)
+    internal fun delete(@PathVariable id: Long?): ResponseEntity<*> {
+        if (id != null) seedRepository.deleteById(id)
+        return ResponseEntity.noContent().build<Any>()
+    }
 }
