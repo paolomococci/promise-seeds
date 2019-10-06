@@ -103,4 +103,16 @@ class SeedRestController(
         if (id != null) seedRepository.deleteById(id)
         return ResponseEntity.noContent().build<Any>()
     }
+
+    @GetMapping("/name/{name}")
+    @Throws(URISyntaxException::class)
+    internal fun searchByName(@PathVariable name: String?): Resources<Resource<Seed>> {
+        val seeds = seedRepository.findByName(name!!).asSequence()
+                .map(seedResourceAssembler::toResource).toList()
+        return Resources(
+                seeds,
+                ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(SeedRestController::class.java)
+                        .searchByName(name)).withSelfRel()
+        )
+    }
 }
