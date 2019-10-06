@@ -31,9 +31,6 @@ class Seed {
     @Column(nullable = true)
     var name: String? = null
 
-    constructor()
-
-    constructor(name: String) : this() {
-        this.name = name
-    }
+    @Column(nullable = true)
+    var value: Double? = null
 }
