@@ -20,7 +20,10 @@ package local.example.seed.repository
 
 import local.example.seed.model.Seed
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource
-interface SeedRepository : CrudRepository<Seed, Long>
+interface SeedRepository : CrudRepository<Seed, Long> {
+    fun findByName(@Param("name") name: String): List<Seed>
+}
