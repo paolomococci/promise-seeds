@@ -75,6 +75,7 @@ class SeedRestController(
         val updated = seedRepository.findById(id!!)
                 .map { temp ->
                     temp.name = update.name
+                    temp.value = update.value
                     seedRepository.save(temp)
                 }.orElseGet {
                     seedRepository.save(update)
@@ -87,8 +88,11 @@ class SeedRestController(
     @Throws(URISyntaxException::class)
     internal fun partialUpdate(@RequestBody update: Seed, @PathVariable id: Long?): ResponseEntity<*> {
         val updated = seedRepository.findById(id!!)
-                .map {
-                    temp -> if (!update.name.isNullOrBlank()) temp.name = update.name
+                .map { temp ->
+                    if (!update.name.isNullOrBlank()) temp.name = update.name
+                    if (update.value != null) {
+                        if (update.value!!.isFinite()) temp.value = update.value
+                    }
                     seedRepository.save(temp)
                 }.orElseGet {
                     seedRepository.save(update)
