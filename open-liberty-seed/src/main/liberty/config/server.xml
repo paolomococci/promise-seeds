@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="${project.name}">
+
+    <featureManager>
+        <feature>microProfile-3.2</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint"
+                  httpPort="9090"/>
+
+    <webApplication location="${project.name}.war" contextRoot="/"/>
+    <mpMetrics authentication="false"/>
+</server>
